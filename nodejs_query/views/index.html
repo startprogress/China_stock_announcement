@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<meta charset="UTF-8">
+
+<script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+<link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
+<script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
+
+
+<head>
+	<title>股票公告</title>
+</head>
+<body>
+<h2 style="margin:10px">股票公告查询</h2>
+<div class="input-group" style="width:1250px">
+
+  <span class="input-group-addon" id="basic-addon1">公告类型</span>
+  <input id= "anncType" type="text" class="form-control" placeholder="上市公司(sse),监管公告(csrc)" aria-describedby="basic-addon2">
+  
+  <span class="input-group-addon" id="basic-addon2">股票代码</span>
+  <input id="symbol" type="text" class="form-control" placeholder="数字代码（6位）" aria-describedby="basic-addon2">
+
+  <span class="input-group-addon">日期</span>
+  <input id="dateRange" type="text" class="form-control" placeholder="YYYY-MM-DD(~YYYY-MM-DD)" aria-describedby="basic-addon2">
+
+  <span class="input-group-btn">
+    <button class="btn btn-default" type="button">查询</button>
+  </span>
+</div>
+
+<div >
+  <table style="width:1250px" >
+
+    <tr bgcolor="#337ab7">
+      <th width="85"><font color="#fff">  股票代码</font></th>
+    
+      <% if (annctype == 'sse'){ %>
+      <th width="85"><font color="#fff">  股票简称</font></th>
+      <% } %>
+      <% if (annctype == 'csrc'){ %>
+      <th width="85"><font color="#fff">  监管类型</font></th>
+      <% } %>
+
+      <th width="650"><font color="#fff">   标题  </font></th>
+      <th width="110"><font color="#fff"> 发布日期</font></th>
+      <th width="85"><font color="#fff">  发布时间</font></th>
+      <th width="170"><font color="#fff"> 文件编号</font></th>
+      <th width="65"><font color="#fff">    文件  </font></th>
+    </tr>
+
+    <% for(var i = 0; i < announcements.length; i++){    
+         var annc = announcements[i];
+    %>
+    <tr>  
+      <td width="85"><%= annc.Symbol    %></td>
+
+      <% if (annctype == 'sse'){ %>
+      <td width = "85"><%= annc.Abbr_Name %></td>
+      <% } %>
+      <% if (annctype == 'csrc'){ %>
+      <td width = "85"><%= annc.Regu_Type %></td>
+      <% } %> 
+
+      <td width="650"><%= annc.Title     %></td> 
+      <td width="110"><%= annc.Annc_Date %></td> 
+      <td width="85"><%= annc.Annc_Time %></td>
+      <td width="170"><%= annc.Annc_Key  %></td>
+
+      <% if (annc.Valid == 1){
+        var readHref = "http://192.168.0.71:3000/read?anncType=" + annctype + "&anncKey=" + annc.Annc_Key + "&format=";
+    
+        if (annc.Format == 'PDF' || annc.Format == 'pdf'){
+        %>
+        <td width="65">
+          <a href = <%= readHref +  "pdf"%> target="_blank" ><img src="/images/pdf.png"/>
+          </a>
+          <a href = <%= readHref +  "txt"%> target="_blank" ><img src="/images/txt.png"/>
+          </a>
+        </td>
+        <% } %>
+
+        <% if (annc.Format == 'DOC' || annc.Format == 'doc'){ %>
+        <td width="65">
+          <a href = <%= readHref +  "doc" %> target="_blank" ><img src="/images/doc.png"/>
+          </a>
+          <a href = <%= readHref +  "txt" %> target="_blank"><img src="/images/txt.png"/>
+          </a>
+        </td>
+        <% } %>
+
+        <% if (annc.Format == 'TXT' || annc.Format == 'txt'|| annc.Format == ""){ %>
+        <td width="65">
+          <a href = <%= readHref +  "txt" %> target="_blank"><img src="/images/txt.png"/>
+          </a>
+        </td>
+        <% } %>
+      <% } %>
+    </tr>  
+    <% } %>
+  </table>
+
+  <table>
+  <tr >
+  <td bgcolor="#337ab7" width="1250" align="center">  <font color="#fff"> 共  <%= announcements.length.toString()  %>    份公告 </font>  <td>
+  </tr>
+  </table>
+
+
+</div>
+
+<script type="text/javascript">
+$("button").click(function(){
+  var symbol = $("#symbol").val();
+  var anncType = $("#anncType").val();
+  var dateRange = $("#dateRange").val();
+  var param = '';
+  if (symbol != ''){
+    param = param + "&symbol=" + symbol;
+  }
+  if (dateRange != ''){
+    param = param + "&dateRange=" + dateRange;
+  }
+  location.href = "http://192.168.0.71:3000/show?anncType=" + anncType + param;
+  //window.open("http://192.168.0.71:3000/show?anncType=" + anncType + param, "_blank");
+});
+</script>
+</body>
+</html>

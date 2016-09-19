@@ -1,0 +1,20 @@
+{
+  "name": "annc_serv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "zhb",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "ejs": "^2.4.2",
+    "express": "^4.14.0",
+    "jquery": "^3.1.0",
+    "jshint": "^2.9.2",
+    "log4js": "^0.6.37",
+    "mysql": "^2.11.1"
+  }
+}

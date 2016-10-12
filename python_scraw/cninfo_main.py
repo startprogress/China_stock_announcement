@@ -141,7 +141,7 @@ def download(columntype, daterange_i, downloadpath):
                     valid = 0  # 下载成功后变为1
                     # 得到 title url 和 file_type
                     title = ii['announcementTitle'].replace(',', '').replace(
-                        '<font color=red>', '').replace('</font>', '').strip('\n')
+                        '<font color=red>', '').replace('</font>', '').replace('\n','')
                     url = 'http://www.cninfo.com.cn/' + \
                         ii['adjunctUrl'].strip()
                     # 防止重复

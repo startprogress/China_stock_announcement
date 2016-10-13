@@ -1,6 +1,9 @@
-## node 启动 annc_serv.js,端口3000
-## 支持api调用和网页访问:
+### node 启动 annc_serv.js,端口3000
+
+### 支持api调用和网页访问:
 * api:"/query"可以通过时间范围，股票代码和公告类型进行查询，返回json数据，"/down"可以根据公告id提供下载.
 * 网页:在网页直接访问IP:PORT/,默认返回当日上市公司公告，然后可以根据时间范围，股票代码和公告类型进行查询，点击相应文件类型的图标可以查看文件
-## route.js确定了访问路径，controller.js声明了不同访问路径的操作，connection.js用于连接数据库。public存放了图片，第三方js和css文件，view里存放ejs的前端模版。
-## 公告信息存在数据库里，公告文件在服务器本地。
+
+### route.js确定了访问路径，controller.js声明了不同访问路径的操作，connection.js用于连接数据库。public存放了图片，第三方js和css文件，view里存放ejs的前端模版。
+
+### 公告信息存在数据库里，公告文件在服务器本地。

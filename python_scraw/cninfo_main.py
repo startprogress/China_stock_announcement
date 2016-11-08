@@ -197,8 +197,7 @@ def download(columntype, daterange_i, downloadpath):
                                 now.append([anncid, symbol, abbv, title, antime[
                                            0:10], antime[-8:], file_type, url, valid, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")])
                         elif columntype == 'regulator':
-                            if ii['secCode'] != None and ii['secCode'] != '':
-                                symbol = ii['secCode'].replace(',', ';')
+                            symbol = ii['secCode'].replace(',', ';')
                             regu_type = ii['columnId']
                             # 根据columnId来确定公告类型
                             if regu_type.find('251201') > -1 or regu_type.find('010206') > -1:
@@ -434,7 +433,8 @@ def download(columntype, daterange_i, downloadpath):
                     if len(row[0]) > 3 and row[1] != None and row[1] != '':
                         impact_i = row[1].strip('\n').split(';')
                         for imp in impact_i:
-                            impact.append([row[0], imp])
+                            if imp != '':
+                                impact.append([row[0], imp])
                 for item in impact:
                     f_w.writerow(item)
                 f_impact.close()

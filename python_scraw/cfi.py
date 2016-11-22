@@ -150,7 +150,6 @@ def get_data(urls):
             else:
                 write2csv(csvpath, csvfile, sheetcontent, False)
 
-
 def cfi_data():
     # 通过多级目录找到所需数据首页的url，并把所有页面的url都找到
     urls = get_url()
@@ -161,7 +160,6 @@ def cfi_data():
         print '抓取有错误'
     else:
         print '抓取完成'
-
 
 # 调用了cninfoAnncDownload
 if __name__ == "__main__":

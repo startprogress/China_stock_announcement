@@ -41,14 +41,14 @@ def import2mysql(columntype, csvfile, tablename):
     logger_mysql.setLevel(logging.DEBUG)
     # 连接数据库
     try:
-        conn = MySQLdb.connect(host='', user='',
-                               passwd='', port=3306)
+        conn = MySQLdb.connect(host='192.168.30.215', user='root',
+                               passwd='123456', port=3306)
         cur = conn.cursor()
     except MySQLdb.Error, e:
         logger_mysql.error("MySQL数据连接不上 %s" % (str(e)))
     else:
-        # datebase annc
-        cur.execute('use annc;')
+        # datebase migou
+        cur.execute('use migou;')
         sql = "load data local infile " + "'" + csvfile + "'" + \
             " into table " + tablename + " fields terminated by ',' lines terminated by '\n';"
         try:
@@ -105,7 +105,16 @@ def download(columntype, daterange_i, downloadpath):
     while flag == True:
         # request headers
         headers = {
-
+            "Host": "www.cninfo.com.cn",
+            "Connection": "keep-alive",
+            "Accept": "application/json, text/javascript, */*; q=0.01",
+            "Origin": "http://www.cninfo.com.cn",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36",
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+            "Referer": "http://www.cninfo.com.cn/cninfo-new/announcement/show",
+            "Accept-Encoding": "gzip, deflate",
+            "Accept-Language": "zh-CN,zh;q=0.8,en;q=0.6",
+            "Cookie": "JSESSIONID=C462F6C346BD95BB5237F199BBB67E2F; __guid=182209569.995073424426636300.1467983882174.9705; JSESSIONID=E0CC8AB4BD2A4FE737B0E69B5B7B9E11"
         }
         # request data
         data = 'stock=&searchkey=&plate=&category=&trade=&column=' + columntype + '&columnTitle=%E5%8E%86%E5%8F%B2%E5%85%AC%E5%91%8A%E6%9F%A5%E8%AF%A2&pageNum=' + \
@@ -118,6 +127,10 @@ def download(columntype, daterange_i, downloadpath):
                                (e, str(daterange_i), str(page_num)))
             flag = False
         except urllib2.URLError, e:
+            logger_error.error('响应错误 日期 页数: %s %s %s' %
+                               (e, str(daterange_i), str(page_num)))
+            flag = False
+        except socket.error, e:
             logger_error.error('响应错误 日期 页数: %s %s %s' %
                                (e, str(daterange_i), str(page_num)))
             flag = False
@@ -264,6 +277,9 @@ def download(columntype, daterange_i, downloadpath):
                         '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
                 except socket.timeout:
                     downhtml(contentpath, anncid, url)
+                except socket.error, e:
+                    logger_error.error(
+                        '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
                 else:
                     contentsoup = BeautifulSoup(
                         contentpage, 'lxml', from_encoding="utf-8")
@@ -302,14 +318,18 @@ def download(columntype, daterange_i, downloadpath):
             def downjs(contentpath, anncid, url):
                 try:
                     contentpage = urllib2.urlopen(url, timeout=60)
+                    content_txt = contentpage.read()
                 except urllib2.URLError, e:
                     logger_error.error(
                         '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
                 except socket.timeout:
                     downjs(contentpath, anncid, url)
+                except socket.error, e:
+                    logger_error.error(
+                        '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
                 else:
                     try:
-                        content_txt = contentpage.read().decode('gbk').encode('utf-8')
+                        content_txt = content_txt.decode('gbk').encode('utf-8')
                     except UnicodeDecodeError, e:
                         logger_error.error(
                             'js类型解码错误 id号 URL网址: %s %s %s' % (e, anncid, url))
@@ -333,11 +353,15 @@ def download(columntype, daterange_i, downloadpath):
             def downdoc(contentpath, anncid, url):
                 try:
                     contentpage = urllib2.urlopen(url, timeout=60)
+                    content_doc = contentpage.read()
                 except urllib2.URLError, e:
                     logger_error.error(
                         '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
                 except socket.timeout:
                     downdoc(contentpath, anncid, url)
+                except socket.error, e:
+                    logger_error.error(
+                        '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
                 else:
                     if url.find('.docx') > -1 or url.find('.DOCX') > -1:
                         f_temp = open(
@@ -345,7 +369,7 @@ def download(columntype, daterange_i, downloadpath):
                     else:
                         f_temp = open(
                             contentpath + anncid + '.doc', 'w+')
-                    f_temp.write(contentpage.read())
+                    f_temp.write(content_doc)
                     f_temp.close()
                     logger.info('成功下载： id为：%s url：%s ' % (anncid, url))
                     row[8] = 1
@@ -354,6 +378,7 @@ def download(columntype, daterange_i, downloadpath):
             def downpdf(contentpath, anncid, url):
                 try:
                     contentpage = urllib2.urlopen(url, timeout=60)
+                    content_pdf = contentpage.read()
                 except urllib2.URLError, e:
                     logger_error.error(
                         '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
@@ -362,10 +387,13 @@ def download(columntype, daterange_i, downloadpath):
                         '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
                 except socket.timeout:
                     downpdf(contentpath, anncid, url)
+                except socket.error, e:
+                    logger_error.error(
+                        '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
                 else:
                     f_temp = open(
                         contentpath + anncid + '.pdf', 'w+')
-                    f_temp.write(contentpage.read())
+                    f_temp.write(content_pdf)
                     f_temp.close()
                     logger.info('成功下载： id为：%s url：%s ' % (anncid, url))
                     row[8] = 1

@@ -10,3 +10,5 @@
 * 在python中安装 pip install pdfminer，然后调用formatFun.py中的p2t
 
 #### formatFun.py中的参数，文件在当前目录下就写文件名即可，如果不是，则用绝对路径指明文件名
+
+### 转换效率不是很高。有兴趣的同学可以试一试Apache的Tika，解析的种类更丰富，但效率没测试过

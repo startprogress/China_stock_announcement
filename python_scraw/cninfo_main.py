@@ -213,7 +213,9 @@ def download(columntype, daterange_i, downloadpath):
                             symbol = ii['secCode'].replace(',', ';')
                             regu_type = ii['columnId']
                             # 根据columnId来确定公告类型
-                            if regu_type.find('251201') > -1 or regu_type.find('010206') > -1:
+                            if regu_type == None:
+                                regu_type = 'NULL'
+                            elif regu_type.find('251201') > -1 or regu_type.find('010206') > -1:
                                 regu_type = 'SZSE'
                             elif regu_type.find('251202') > -1 or regu_type.find('010215') > -1:
                                 regu_type = 'SSE'

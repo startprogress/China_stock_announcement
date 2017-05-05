@@ -15,3 +15,6 @@
 * 定期执行python cninfo_main.py sse(or regulator)
 * 如需提供静态网站展示，可以用nodejs_query中的代码启动一个服务(注意相应的目录和sql查询语句与cninfo_main.py相对应)
 
+## To Do
+* 准备把这个爬虫用scrapy重写一些，这样可以用pipeline配置MySQL，还可能用到多线程
+* 把另一个项目，爬棉花数据的项目跟这个合并到一起去

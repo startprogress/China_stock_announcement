@@ -40,6 +40,7 @@ def import2mysql(columntype, csvfile, tablename):
     logger_mysql.addHandler(handler_mysql)           # 为logger添加handler
     logger_mysql.setLevel(logging.DEBUG)
     # 连接数据库
+
     try:
         conn = MySQLdb.connect(host='192.168.30.215', user='root',
                                passwd='123456', port=3306)
@@ -154,7 +155,7 @@ def download(columntype, daterange_i, downloadpath):
                     valid = 0  # 下载成功后变为1
                     # 得到 title url 和 file_type
                     title = ii['announcementTitle'].replace(',', '').replace(
-                        '<font color=red>', '').replace('</font>', '').replace('\n','')
+                        '<font color=red>', '').replace('</font>', '').replace('\n', '')
                     url = 'http://www.cninfo.com.cn/' + \
                         ii['adjunctUrl'].strip()
                     # 防止重复
@@ -270,7 +271,7 @@ def download(columntype, daterange_i, downloadpath):
         if len(temp) != 0:
             # 把temp中url指向的公告下载到contentpath下,并更新temp到tempupdate
             temp_update = []
-            #################################定义不同文件类型的下载函数############################
+            #################################定义不同文件类型的下载函数#####################
             def downhtml(contentpath, anncid, url):
                 try:
                     contentpage = urllib2.urlopen(url, timeout=60)
@@ -280,8 +281,11 @@ def download(columntype, daterange_i, downloadpath):
                 except socket.timeout:
                     downhtml(contentpath, anncid, url)
                 except socket.error, e:
-                    logger_error.error(
-                        '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
+                    if str(e).find('Connection reset by peer') or str(e).find('Operation timed out') != -1:
+                        downpdf(contentpath, anncid, url)
+                    else:
+                        logger_error.error(
+                            '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
                 else:
                     contentsoup = BeautifulSoup(
                         contentpage, 'lxml', from_encoding="utf-8")
@@ -327,8 +331,11 @@ def download(columntype, daterange_i, downloadpath):
                 except socket.timeout:
                     downjs(contentpath, anncid, url)
                 except socket.error, e:
-                    logger_error.error(
-                        '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
+                    if str(e).find('Connection reset by peer') or str(e).find('Operation timed out') != -1:
+                        downpdf(contentpath, anncid, url)
+                    else:
+                        logger_error.error(
+                            '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
                 else:
                     try:
                         content_txt = content_txt.decode('gbk').encode('utf-8')
@@ -362,8 +369,11 @@ def download(columntype, daterange_i, downloadpath):
                 except socket.timeout:
                     downdoc(contentpath, anncid, url)
                 except socket.error, e:
-                    logger_error.error(
-                        '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
+                    if str(e).find('Connection reset by peer') or str(e).find('Operation timed out') != -1:
+                        downpdf(contentpath, anncid, url)
+                    else:
+                        logger_error.error(
+                            '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
                 else:
                     if url.find('.docx') > -1 or url.find('.DOCX') > -1:
                         f_temp = open(
@@ -390,8 +400,11 @@ def download(columntype, daterange_i, downloadpath):
                 except socket.timeout:
                     downpdf(contentpath, anncid, url)
                 except socket.error, e:
-                    logger_error.error(
-                        '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
+                    if str(e).find('Connection reset by peer') or str(e).find('Operation timed out') != -1:
+                        downpdf(contentpath, anncid, url)
+                    else:
+                        logger_error.error(
+                            '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
                 else:
                     f_temp = open(
                         contentpath + anncid + '.pdf', 'w+')
@@ -400,8 +413,7 @@ def download(columntype, daterange_i, downloadpath):
                     logger.info('成功下载： id为：%s url：%s ' % (anncid, url))
                     row[8] = 1
                     contentpage.close()
-            #################################################################################
-
+            ###################################################################
 
             # temp里的公告都尝试下载，并根据是否成功下载，更新为temp_updata
             for row in temp:

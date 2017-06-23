@@ -19,9 +19,10 @@ import logging.handlers
 import codecs
 import sys
 import MySQLdb
-from bs4 import BeautifulSoup
 from warnings import filterwarnings
 filterwarnings('error', category=MySQLdb.Warning)
+from bs4 import BeautifulSoup
+
 
 
 ###############################################导入mysql数据库#################
@@ -42,14 +43,14 @@ def import2mysql(columntype, csvfile, tablename):
     # 连接数据库
 
     try:
-        conn = MySQLdb.connect(host='192.168.30.215', user='root',
+        conn = MySQLdb.connect(host='127.0.0.1', user='root',
                                passwd='123456', port=3306)
         cur = conn.cursor()
     except MySQLdb.Error, e:
         logger_mysql.error("MySQL数据连接不上 %s" % (str(e)))
     else:
-        # datebase migou
-        cur.execute('use migou;')
+        # datebase stock
+        cur.execute('use stock;')
         sql = "load data local infile " + "'" + csvfile + "'" + \
             " into table " + tablename + " fields terminated by ',' lines terminated by '\n';"
         try:
@@ -466,7 +467,7 @@ def download(columntype, daterange_i, downloadpath):
             if columntype == 'regulator':
                 import2mysql(columntype, listpath +
                              str(daterange_i) + '_temp.csv', 'csrc_annc_list')
-                # 公告影响表
+                #公告影响表
                 impact = []
                 f_impact = open(listpath + 'impact.csv', 'a+')
                 f_w = unicodecsv.writer(

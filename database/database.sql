@@ -1,4 +1,6 @@
- # 监管公告的数据库
+ # 创建数据库;
+ CREATE DATABASE stock;
+ # 监管公告的数据表
 CREATE TABLE `csrc_annc_list` (
   `Annc_Key` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `Symbol` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -12,7 +14,7 @@ CREATE TABLE `csrc_annc_list` (
   `Acqu_Time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-#上市公司的数据库
+#上市公司的数据表
 CREATE TABLE `sse_annc_list` (
   `Annc_Key` char(17) COLLATE utf8_bin DEFAULT NULL,
   `Symbol` char(6) COLLATE utf8_bin DEFAULT NULL,
@@ -26,13 +28,13 @@ CREATE TABLE `sse_annc_list` (
   `Acqu_Time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-#监管公告涉及列表的数据库
+#监管公告涉及列表的数据表
 CREATE TABLE `csrc_impact_list` (
   `Annc_Key` varchar(255) COLLATE utf8_bin DEFAULT '',
   `Symbol` varchar(255) COLLATE utf8_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-#监管类型的数据库
+#监管类型的数据表
 CREATE TABLE `regu_type_info` (
   `Abbv_EN` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `Abbv_CN` varchar(255) COLLATE utf8_bin DEFAULT NULL,

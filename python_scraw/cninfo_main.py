@@ -600,9 +600,6 @@ def downpdf(contentpath, anncid, url):
         contentpage.close()
         return flag
         
-
-
-# 调用了cninfoAnncDownload
 if __name__ == "__main__":
     if len(sys.argv) == 4:  # 按照参数执行，由于python程序本身（***.py）就是argv[0]，所以下标需要从1开始
         main(annc_type=sys.argv[1], start_date=sys.argv[

@@ -32,7 +32,6 @@ conf.read("config.cfg")
 # 赋值
 filepath = conf.get('file', 'filepath')
 logpath = conf.get('file', 'logpath')
-database_name = conf.get('database', 'database_name')
 host_address = conf.get('database', 'host_address')
 user = conf.get('database', 'user')
 password = conf.get('database', 'password')

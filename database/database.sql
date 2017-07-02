@@ -1,5 +1,5 @@
 -- 创建数据库
-CREATE DATABASE stock CHARACTER SET utf8 COLLATE utf8_general_ci;;
+CREATE DATABASE IF NOT EXISTS stock CHARACTER SET utf8 COLLATE utf8_general_ci;;
 USE stock;
 -- 监管公告的数据表
 CREATE TABLE `csrc_annc_list` (

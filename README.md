@@ -10,10 +10,11 @@
 * 2plaintext：   存放一个python小脚本，用于将pdf、doc、docx文件转为纯文本文件
 
 ## 使用
-* 在python_scraw/cninfo_main.py中，修改合适的文件目录和日志目录以及数据库地址
-* 按照database中的sql文件建立数据库
-* 定期执行python cninfo_main.py sse(or regulator)
-* 如需提供静态网站展示，可以用nodejs_query中的代码启动一个服务(注意相应的目录和sql查询语句与cninfo_main.py相对应)
+* 准备好MySQL，Python等环境
+* 进入 database/ 执行 mysql -u $USER -p$PASSWORD <database.sql
+* 在python_scraw/config中，修改合适的文件目录和日志目录以及数据库地址
+* 执行python cninfo_main.py 进行下载，参数介绍见 python_scraw/README.md
 
-## To Do
-* 准备把这个爬虫用scrapy重写一些，这样可以用pipeline配置MySQL，还可能用到多线程
+## 附加 
+* 如需提供静态网站展示，可以用nodejs_query中的代码启动一个服务
+* 2plaintext/ 下的程序可以抽取纯文本

@@ -538,6 +538,9 @@ def downdoc(contentpath, anncid, url):
     except urllib2.URLError, e:
         logger_error.error(
             '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
+    except urllib2.URLError, e:
+        logger_error.error(
+            '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
     except httplib.BadStatusLine, e:
         logger_error.error(
             '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))

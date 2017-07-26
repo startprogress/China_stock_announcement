@@ -438,7 +438,7 @@ def import2mysql(columntype, csvfile, tablename):
 def downhtml(contentpath, anncid, url):
     flag = False
     try:
-        contentpage = urllib2.urlopen(url, timeout=60)
+        contentpage = urllib2.urlopen(url)
     except urllib2.URLError, e:
         logger_error.error(
             '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
@@ -491,7 +491,7 @@ def downhtml(contentpath, anncid, url):
 def downjs(contentpath, anncid, url):
     flag = False
     try:
-        contentpage = urllib2.urlopen(url, timeout=60)
+        contentpage = urllib2.urlopen(url)
         content_txt = contentpage.read()
     except urllib2.URLError, e:
         logger_error.error(
@@ -533,7 +533,7 @@ def downjs(contentpath, anncid, url):
 def downdoc(contentpath, anncid, url):
     flag = False
     try:
-        contentpage = urllib2.urlopen(url, timeout=60)
+        contentpage = urllib2.urlopen(url)
         content_doc = contentpage.read()
     except urllib2.URLError, e:
         logger_error.error(
@@ -567,12 +567,10 @@ def downdoc(contentpath, anncid, url):
 ##下载pdf
 def downpdf(contentpath, anncid, url):
     flag = False
+    print url
     try:
-        contentpage = urllib2.urlopen(url, timeout=60)
+        contentpage = urllib2.urlopen(url)
         content_pdf = contentpage.read()
-    except urllib2.URLError, e:
-        logger_error.error(
-            '公告链接错误 id号 URL网址: %s %s %s' % (e, anncid, url))
 
     except httplib.BadStatusLine, e:
         logger_error.error(

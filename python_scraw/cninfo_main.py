@@ -484,7 +484,8 @@ def downhtml(contentpath, anncid, url):
             logger.info('成功下载： id为：%s url：%s ' % (anncid, url))
             flag = True
     finally:
-        contentpage.close()
+        if 'contentpage' in locals().keys():
+            contentpage.close()
         return flag
 
 ##把js返回的文字下载到txt中
@@ -526,7 +527,8 @@ def downjs(contentpath, anncid, url):
                             (anncid, url))
                 flag = True   
     finally:
-        contentpage.close()
+        if 'contentpage' in locals().keys():
+            contentpage.close()
         return flag
         
 ##下载doc
@@ -564,7 +566,8 @@ def downdoc(contentpath, anncid, url):
         logger.info('成功下载： id为：%s url：%s ' % (anncid, url))
         flag =True
     finally:    
-        contentpage.close()
+        if 'contentpage' in locals().keys():
+            contentpage.close()
         return flag
 
 ##下载pdf
@@ -594,7 +597,8 @@ def downpdf(contentpath, anncid, url):
         logger.info('成功下载： id为：%s url：%s ' % (anncid, url))
         flag = True
     finally:
-        contentpage.close()
+        if 'contentpage' in locals().keys():
+            contentpage.close()
         return flag
         
 if __name__ == "__main__":

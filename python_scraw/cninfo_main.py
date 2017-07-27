@@ -570,7 +570,6 @@ def downdoc(contentpath, anncid, url):
 ##下载pdf
 def downpdf(contentpath, anncid, url):
     flag = False
-    print url
     try:
         contentpage = urllib2.urlopen(url)
         content_pdf = contentpage.read()

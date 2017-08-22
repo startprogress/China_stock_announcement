@@ -49,12 +49,11 @@ if os.path.exists(logpath) == False:
 def main(annc_type, start_date=datetime.datetime.today().strftime("%Y%m%d"), end_date=datetime.datetime.today().strftime("%Y%m%d"), savepath=filepath):
     if savepath[-1] != '/':
         savepath += savepath + '/'
-    # TODO
-    # currentMinute = int(time.strftime('%M', time.localtime(time.time())))
-    # currentHour = int(time.strftime('%H', time.localtime(time.time())))
-    # # 当天下午2点以后要提前追一天，因为有一些公告会提前放出来
-    # if currentMinute == 10 and currentHour > 14:
-    #     end_date = str(datetime.date.today() + datetime.timedelta(days=1))
+    currentMinute = int(time.strftime('%M', time.localtime(time.time())))
+    currentHour = int(time.strftime('%H', time.localtime(time.time())))
+    # 当天下午2点以后要提前追一天，因为有一些公告会提前放出来
+    if currentHour > 14:
+        end_date = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y%m%d")
     global logger_error
     global logger
     # 生产日期列表

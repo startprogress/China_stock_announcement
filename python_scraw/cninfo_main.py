@@ -91,7 +91,7 @@ def main(annc_type, start_date=datetime.datetime.today().strftime("%Y%m%d"), end
                 if annc_type == 'sse':
                     LOG_ERROR_FILE = logpath + \
                         str(datei)[0:7].replace('-', '') + '_error.log'
-                if annc_type == 'reg':
+                if annc_type == 'regulator':
                     LOG_ERROR_FILE = logpath + \
                         str(datei)[0:7].replace('-', '') + '_error.log'
 
@@ -111,7 +111,7 @@ def main(annc_type, start_date=datetime.datetime.today().strftime("%Y%m%d"), end
                 if annc_type == 'sse':
                     LOG_INFO_FILE = logpath + \
                         str(datei)[0:7].replace('-', '') + '_info.log'
-                if annc_type == 'reg':
+                if annc_type == 'regulator':
                     LOG_INFO_FILE = logpath + \
                         str(datei)[0:7].replace('-', '') + '_info.log'
 
@@ -136,11 +136,12 @@ def parse(columntype, daterange_i, downloadpath):
             str(daterange_i)[0:4] + '/' + str(daterange_i)[5:7] + '/'
         listpath = downloadpath + 'sse/list/' + \
             str(daterange_i)[0:4] + '/'
-    if columntype == 'reg':
+    if columntype == 'regulator':
         contentpath = downloadpath + 'reg/content/' + \
             str(daterange_i)[0:4] + '/' + str(daterange_i)[5:7] + '/'
         listpath = downloadpath + 'reg/list/' + \
             str(daterange_i)[0:4] + '/'
+        columntype = 'regulator'
     if os.path.exists(contentpath) == False:
         os.makedirs(contentpath)
     if os.path.exists(listpath) == False:
@@ -260,7 +261,7 @@ def parse(columntype, daterange_i, downloadpath):
 
                                 now.append([anncid, symbol, abbv, title, antime[
                                            0:10], antime[-8:], file_type, url, valid, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")])
-                        elif columntype == 'reg':
+                        elif columntype == 'regulator':
                             symbol = ii['secCode'].replace(',', ';')
                             regu_type = ii['columnId']
                             # 根据columnId来确定公告类型
@@ -366,7 +367,7 @@ def parse(columntype, daterange_i, downloadpath):
             if columntype == 'sse':
                 import2mysql(columntype, listpath +
                              str(daterange_i) + '_temp.csv', 'sse_annc_list')
-            if columntype == 'reg':
+            if columntype == 'regulator':
                 import2mysql(columntype, listpath +
                              str(daterange_i) + '_temp.csv', 'reg_annc_list')
                 #公告影响表
@@ -392,7 +393,7 @@ def parse(columntype, daterange_i, downloadpath):
 def import2mysql(columntype, csvfile, tablename):
     if columntype == 'sse':
         LOG_FILE = logpath + 'sse_mysql.log'
-    if columntype == 'reg':
+    if columntype == 'regulator':
         LOG_FILE = logpath + 'regu_mysql.log'
     handler_mysql = logging.handlers.RotatingFileHandler(
         LOG_FILE, maxBytes=1024 * 1024, backupCount=5)  # 实例化handler

@@ -7,7 +7,7 @@
 ## 文件说明
 * database/: 存放数据库的sql文件，可以用shell命令执行，创建数据库和数据表
 * nodejs_query/: 存放node服务的代码
-* python_scraw/:  存放python爬虫的程序
+* python_scraw/:  存放python爬虫的程序, cninfo_main.py可实现较为全面的功能，annc文件下是用scrapy框架写的爬虫，正在逐渐完善，以后会替代cninfo_main.py
 * 2plaintext/: 存放一个python小脚本，用于将pdf、doc、docx文件转为纯文本文件
 
 ## 使用
